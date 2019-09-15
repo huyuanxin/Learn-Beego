@@ -7,7 +7,7 @@ import (
 //路由大小写敏感
 func init() {
     beego.Router("/", &controllers.MainController{})
-	beego.Router("/register",&controllers.UserRegisterController{})
-	beego.Router("/login",&controllers.UserLoginController{})
-	beego.Router("/changepassword",&controllers.UserLoginController{})
+	beego.Router("/Register",&controllers.UserRegisterController{})
+	beego.Router("/Login",&controllers.UserLoginController{})
+	beego.Router("/ChangePassWord",&controllers.UserLoginController{})
 }
