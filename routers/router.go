@@ -9,4 +9,5 @@ func init() {
     beego.Router("/", &controllers.MainController{})
 	beego.Router("/register",&controllers.UserRegisterController{})
 	beego.Router("/login",&controllers.UserLoginController{})
+	beego.Router("/changepassword",&controllers.UserLoginController{})
 }
