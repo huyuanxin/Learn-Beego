@@ -33,7 +33,7 @@ func (c *UserRegisterController) Post() {
 	c.TplName="Register.html"
 	userName:=c.GetString("UserName")
 	userPassWord:= c.GetString("PassWord")
-	userPassWordMd5:=PassWordMd5(c.GetString("PassWord"))//对获取的密码进行MD5加密
+	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
 	if userName==""||userPassWord==""{
 		beego.Info("密码或者用户名不能为空")
 		return
@@ -43,11 +43,11 @@ func (c *UserRegisterController) Post() {
 	user.Name=userName
 	user.PassWord=userPassWordMd5
 	_,err:=o.Insert(&user) //Insert返回两个值，但我们只要第二个，即err
-	c.Ctx.Redirect(302, "/login")//重定向
 	if err !=nil{
 		beego.Info("插入失败",err)
 		return
 	}
+	c.Ctx.Redirect(302, "/login")//重定向
 }
 
 func (c *UserRegisterController) Get() {
@@ -58,9 +58,53 @@ func (c *UserRegisterController) Get() {
 func (c *UserLoginController) Get() {
 	//对登录页面进行控制
 	c.TplName="Login.html"
+
+
+
 }
 
 func (c *UserLoginController) Post() {
 	//对登录逻辑进行判断
+	c.TplName="Login.html"
+	o:=orm.NewOrm()
+	user:=models.User{}
+	/*
+		根据Id来查询
+		user.Id=1
+		err:=o.Read(&user)
+		if err!=nil{
+			beego.Info("查询失败",err)
+			return
+		}
+		beego.Info("查询成功",user.Id)
+	*/
+
+	/*
+		根据其他属性来进行查询
+			user.Name="123"
+			err:=o.Read(&user,"Name")
+			if err!=nil{
+				beego.Info("查询失败",err)
+				return
+			}
+			//id:=user.Id 查询后user被赋予查询到的值
+			beego.Info("查询成功",user)
+	*/
+	userName:=c.GetString("UserName")
+	userPassWord:= c.GetString("PassWord")
+	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
+	user.Name=userName
+	err:=o.Read(&user,"Name")
+	if err!=nil{
+		beego.Info("查询失败",err)
+		return
+	}
+	getPassWord:=user.PassWord
+	if getPassWord!=userPassWordMd5{
+		beego.Info("登录失败")
+		return
+	}
+	beego.Info("登录成功")
+
 
 }
