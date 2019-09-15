@@ -48,7 +48,7 @@ func (c *UserRegisterController) Post() {
 		return
 	}
 	beego.Info("注册成功")
-	c.Ctx.Redirect(302, "/login")//重定向
+	c.Ctx.Redirect(302, "/Login")//重定向
 }
 
 func (c *UserRegisterController) Get() {
