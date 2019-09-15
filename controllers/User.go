@@ -33,11 +33,11 @@ func (c *UserRegisterController) Post() {
 	c.TplName="Register.html"
 	userName:=c.GetString("UserName")
 	userPassWord:= c.GetString("PassWord")
-	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
 	if userName==""||userPassWord==""{
 		beego.Info("密码或者用户名不能为空")
 		return
 	}
+	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
 	o :=orm.NewOrm()
 	user :=models.User{}
 	user.Name=userName
@@ -47,6 +47,7 @@ func (c *UserRegisterController) Post() {
 		beego.Info("插入失败",err)
 		return
 	}
+	beego.Info("注册成功")
 	c.Ctx.Redirect(302, "/login")//重定向
 }
 
@@ -58,8 +59,6 @@ func (c *UserRegisterController) Get() {
 func (c *UserLoginController) Get() {
 	//对登录页面进行控制
 	c.TplName="Login.html"
-
-
 
 }
 
@@ -92,6 +91,10 @@ func (c *UserLoginController) Post() {
 	*/
 	userName:=c.GetString("UserName")
 	userPassWord:= c.GetString("PassWord")
+	if userName==""||userPassWord==""{
+		beego.Info("账号或者密码不能为空")
+		return
+	}
 	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
 	user.Name=userName
 	err:=o.Read(&user,"Name")
@@ -105,6 +108,15 @@ func (c *UserLoginController) Post() {
 		return
 	}
 	beego.Info("登录成功")
+	//后期需要添加cookies和页面跳转
 
+}
 
+func (c *UserChangePasswordController) Get() {
+	//对修改密码界面进行控制
+	c.TplName = "Index.html"
+}
+func (c *UserChangePasswordController) Post() {
+	//对修改密码逻辑进行判断
+	c.TplName = "Index.html"
 }
