@@ -37,6 +37,16 @@ func (c *UserRegisterController) Post() {
 		beego.Info("密码或者用户名不能为空")
 		return
 	}
+	//避免相同的用户名重复注册
+	oCheck:=orm.NewOrm()
+	userCheck:=models.User{}
+	userCheck.Name=userName
+	errCheck:=oCheck.Read(&userCheck,"Name")
+	if errCheck==nil{
+		beego.Info("用户已经存在")
+		return
+	}
+	//
 	userPassWordMd5:=PassWordMd5(userPassWord)//对获取的密码进行MD5加密
 	o :=orm.NewOrm()
 	user :=models.User{}
@@ -114,9 +124,40 @@ func (c *UserLoginController) Post() {
 
 func (c *UserChangePasswordController) Get() {
 	//对修改密码界面进行控制
-	c.TplName = "Index.html"
+	c.TplName = "ChangePassWord.html"
 }
 func (c *UserChangePasswordController) Post() {
 	//对修改密码逻辑进行判断
-	c.TplName = "Index.html"
+	c.TplName = "ChangePassWord.html"
+	userName:=c.GetString("UserName")
+	oldPassWord:=c.GetString("OldPassWord")
+	newPassWord:=c.GetString("NewPassWord")
+	reEnterNewPassWord:=c.GetString("ReEnterNewPassWord")
+	if userName==""||oldPassWord==""||newPassWord==""||reEnterNewPassWord==""{
+		beego.Info("所有项目都不能为空")
+		return
+	}
+	o:=orm.NewOrm()
+	user:=models.User{}
+	user.Name=userName
+	err:=o.Read(&user,"Name")
+	if err!=nil{
+		beego.Info("更改失败",err)
+		return
+	}
+	if	PassWordMd5(oldPassWord)!=user.PassWord{
+		beego.Info("修改失败，原密码错误")
+		return
+	}
+	if newPassWord!=reEnterNewPassWord{
+		beego.Info("修改失败，请确认两次密码都输入正确")
+	}
+	user.PassWord=PassWordMd5(newPassWord)
+	_,err=o.Update(&user)
+	if err!=nil{
+		beego.Info("修改失败",err)
+		return
+	}
+	beego.Info("修改成功")
+	c.Ctx.Redirect(302, "/Login")
 }
