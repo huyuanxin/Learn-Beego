@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	_"github.com/astaxie/beego/orm"
-	_"server/models"
+	_"beego-learning/models"
 )
 
 type MainController struct {

@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"crypto/md5"
 	"encoding/hex"
-	"server/models"
+	"beego-learning/models"
 )
 
 type UserRegisterController struct {
