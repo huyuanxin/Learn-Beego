@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "server/routers"
-	_"server/models"
+	_ "beego-learning/routers"
+	_"beego-learning/models"
 	"github.com/astaxie/beego"
 )
 
