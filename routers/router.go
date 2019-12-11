@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/astaxie/beego"
 	"beego-learning/controllers"
+	"github.com/astaxie/beego"
 )
 //路由大小写敏感
 func init() {

@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"beego-learning/models"
 	"crypto/md5"
 	"encoding/hex"
-	"beego-learning/models"
+	"fmt"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 type UserRegisterController struct {
@@ -69,7 +70,8 @@ func (c *UserRegisterController) Get() {
 func (c *UserLoginController) Get() {
 	//对登录页面进行控制
 	c.TplName="Login.html"
-
+	var users= miltyQuery()
+	fmt.Printf(users[0].Name+"   "+users[1].Name+"\n")
 }
 
 func (c *UserLoginController) Post() {
@@ -160,4 +162,10 @@ func (c *UserChangePasswordController) Post() {
 	}
 	beego.Info("修改成功")
 	c.Ctx.Redirect(302, "/Login")
+}
+
+func miltyQuery() (users[] models.User) {
+	o:=orm.NewOrm()
+	o.QueryTable("User").Filter("PassWord", "123").All(&users)
+	return users
 }

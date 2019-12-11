@@ -13,9 +13,10 @@ type User struct {
 
 func init()  {
 	//设置数据库信息
-	orm.RegisterDataBase("default","mysql","root:root@tcp(localhost:3306)/test?charset=utf8")
+	orm.RegisterDataBase("default","mysql","root:root@tcp(localhost:3306)/server?charset=utf8")
 	//映射Model数据
 	orm.RegisterModel(new(User))
 	//建表
 	orm.RunSyncdb("default",false,true)
+
 }

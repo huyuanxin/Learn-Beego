@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	_ "beego-learning/models"
 	"github.com/astaxie/beego"
-	_"github.com/astaxie/beego/orm"
-	_"beego-learning/models"
+	_ "github.com/astaxie/beego/orm"
 )
 
 type MainController struct {
